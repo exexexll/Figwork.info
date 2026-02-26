@@ -410,11 +410,15 @@ function drawSunset(time) {
   }
 }
 
-// ── Animation Loop ──
+// ── Animation Loop (throttled ~30fps for smooth scroll) ──
 if (!prefersReducedMotion && ctx) {
+  let lastFrame = 0;
+  const FRAME_MS = 33; // ~30fps — plenty for pixel art, keeps scroll smooth
   function sunsetLoop(time) {
-    drawSunset(time);
     requestAnimationFrame(sunsetLoop);
+    if (time - lastFrame < FRAME_MS) return;
+    lastFrame = time;
+    drawSunset(time);
   }
   requestAnimationFrame(sunsetLoop);
 }

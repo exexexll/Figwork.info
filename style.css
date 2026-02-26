@@ -43,6 +43,7 @@ img { display: block; max-width: 100%; }
   width: 100vw;
   height: 100vh;
   height: 100dvh;
+  will-change: transform;  /* GPU layer — keeps scroll smooth */
   z-index: 0;
   pointer-events: none;
   image-rendering: pixelated;
