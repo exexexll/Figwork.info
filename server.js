@@ -105,10 +105,16 @@ const STATIC_DIR = fs.existsSync(path.join(__dirname, 'public', 'index.html'))
 
 app.use(
   express.static(STATIC_DIR, {
-    maxAge: '7d',
     setHeaders(res, filePath) {
       if (/\.(png|jpg|ico|svg|webp)$/.test(filePath)) {
+        // Images: cache 1 year
         res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      } else if (/\.html$/.test(filePath)) {
+        // HTML: always revalidate so updates show immediately
+        res.setHeader('Cache-Control', 'no-cache, must-revalidate');
+      } else if (/\.(css|js)$/.test(filePath)) {
+        // CSS/JS: short cache, revalidate
+        res.setHeader('Cache-Control', 'public, max-age=60, must-revalidate');
       }
     },
   })
