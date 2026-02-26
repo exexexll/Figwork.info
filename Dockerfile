@@ -1,26 +1,26 @@
-FROM nginx:alpine
+FROM node:18-alpine
 
-# Remove default nginx config
-RUN rm /etc/nginx/conf.d/default.conf
+WORKDIR /app
 
-# Copy nginx config (uses __PORT__ placeholder)
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Install dependencies
+COPY package.json ./
+RUN npm install --production
 
-# Copy startup script that injects PORT
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
+# Copy server
+COPY server.js ./
 
-# Copy static site files
-COPY index.html /usr/share/nginx/html/
-COPY thesis.html /usr/share/nginx/html/
-COPY style.css /usr/share/nginx/html/
-COPY script.js /usr/share/nginx/html/
-COPY iconfigwork.png /usr/share/nginx/html/
-COPY robots.txt /usr/share/nginx/html/
-COPY sitemap.xml /usr/share/nginx/html/
+# Copy static site into public/
+RUN mkdir -p public
+COPY index.html public/
+COPY thesis.html public/
+COPY style.css public/
+COPY script.js public/
+COPY iconfigwork.png public/
+COPY robots.txt public/
+COPY sitemap.xml public/
 
-# Railway injects PORT env var at runtime — default 8080
+# Railway injects PORT
 ENV PORT=8080
 EXPOSE 8080
 
-CMD ["/start.sh"]
+CMD ["node", "server.js"]

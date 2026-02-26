@@ -1,6 +1,4 @@
-# Ignore non-production files
-netlify.toml
-_redirects
+node_modules
 railway.toml
 .dockerignore
 Dockerfile
