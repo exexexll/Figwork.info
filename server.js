@@ -97,9 +97,14 @@ app.get('/api/waitlist', async (req, res) => {
 });
 
 // ─── Static files ───────────────────────────
-// Cache images for 1 year, CSS/JS for 7 days
+// Docker puts files in public/; locally they're in the same dir
+const fs = require('fs');
+const STATIC_DIR = fs.existsSync(path.join(__dirname, 'public', 'index.html'))
+  ? path.join(__dirname, 'public')
+  : __dirname;
+
 app.use(
-  express.static(path.join(__dirname, 'public'), {
+  express.static(STATIC_DIR, {
     maxAge: '7d',
     setHeaders(res, filePath) {
       if (/\.(png|jpg|ico|svg|webp)$/.test(filePath)) {
@@ -111,12 +116,12 @@ app.use(
 
 // Clean URL: /thesis → thesis.html
 app.get('/thesis', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'thesis.html'));
+  res.sendFile(path.join(STATIC_DIR, 'thesis.html'));
 });
 
 // Fallback → index.html
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(STATIC_DIR, 'index.html'));
 });
 
 // ─── Start ──────────────────────────────────
