@@ -474,15 +474,24 @@ if (!isThesisPage && !prefersReducedMotion) {
       }
     }
 
-    /* ── Phase 1b: Lock each span to its real char width (desktop only) ── */
+    /* ── Phase 1b: Prevent layout shifts during scramble ── */
     const isMobileAnim = window.innerWidth < 700;
     const allSpans = document.querySelectorAll('.ch');
     if (!isMobileAnim) {
+      /* Desktop: lock each character span to its measured width */
       for (const span of allSpans) {
         const w = span.getBoundingClientRect().width;
         span.style.display = 'inline-block';
         span.style.width = w + 'px';
         span.style.textAlign = 'center';
+      }
+    } else {
+      /* Mobile: lock each WORD wrapper width so line breaks stay stable */
+      const wordWraps = document.querySelectorAll('.decode span[style*="nowrap"]');
+      for (const ww of wordWraps) {
+        const w = ww.getBoundingClientRect().width;
+        ww.style.display = 'inline-block';
+        ww.style.width = w + 'px';
       }
     }
 
