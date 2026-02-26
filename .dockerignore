@@ -1,0 +1,9 @@
+# Ignore non-production files
+netlify.toml
+_redirects
+railway.toml
+.dockerignore
+Dockerfile
+*.md
+.git
+.gitignore
