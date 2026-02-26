@@ -427,7 +427,8 @@ if (!prefersReducedMotion && ctx) {
 // ──────────────────────────────────────────
 // 2. SCRAMBLE DECODE — only on landing page (desktop only)
 // ──────────────────────────────────────────
-const isMobileDevice = window.innerWidth < 700;
+const isMobileDevice = window.matchMedia('(max-width: 699px)').matches;
+console.log('[Figwork] mobile:', isMobileDevice, 'innerWidth:', window.innerWidth);
 
 // Mobile: skip scramble, just blur in
 if (!isThesisPage && isMobileDevice && !prefersReducedMotion) {
