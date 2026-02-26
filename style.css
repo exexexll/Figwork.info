@@ -206,11 +206,9 @@ main {
 /* ---------- DETAILS ---------- */
 .details {
   margin: 6px 0 22px;
-  padding: 14px 16px;
+  padding-left: 16px;
   border-left: 1px solid transparent; /* hidden until animation done */
-  transition: border-color 0.5s ease, background-color 0.5s ease;
-  background: rgba(10, 10, 8, 0.45);
-  border-radius: 4px;
+  transition: border-color 0.5s ease;
 }
 
 .details.revealed,
@@ -407,9 +405,6 @@ footer {
   .details {
     margin: 4px 0 18px;
     padding-left: 12px;
-    background: none;
-    border-radius: 0;
-    padding: 0 0 0 12px;
   }
 
   .waitlist-form {
