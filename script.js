@@ -425,9 +425,34 @@ if (!prefersReducedMotion && ctx) {
 
 
 // ──────────────────────────────────────────
-// 2. SCRAMBLE DECODE — only on landing page
+// 2. SCRAMBLE DECODE — only on landing page (desktop only)
 // ──────────────────────────────────────────
-if (!isThesisPage && !prefersReducedMotion) {
+const isMobileDevice = window.innerWidth < 700;
+
+// Mobile: skip scramble, just blur in
+if (!isThesisPage && isMobileDevice && !prefersReducedMotion) {
+  const decodeEls = document.querySelectorAll('.decode');
+  decodeEls.forEach(el => {
+    el.style.opacity = '0';
+    el.style.filter = 'blur(8px)';
+    el.style.transition = 'opacity 1.2s ease, filter 1.2s ease';
+  });
+  setTimeout(() => {
+    decodeEls.forEach(el => {
+      el.style.opacity = '1';
+      el.style.filter = 'blur(0px)';
+    });
+    const wl = document.querySelector('.waitlist-wrap');
+    if (wl) wl.classList.add('visible');
+    const det = document.querySelector('.details');
+    if (det) det.classList.add('revealed');
+    const lnk = document.querySelector('.link');
+    if (lnk) lnk.classList.add('revealed');
+  }, 400);
+}
+
+// Desktop: full scramble decode
+if (!isThesisPage && !isMobileDevice && !prefersReducedMotion) {
   const ALPHA_LOWER = 'abcdefghijklmnopqrstuvwxyz';
   const ALPHA_UPPER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   function randSameCase(ch) {
