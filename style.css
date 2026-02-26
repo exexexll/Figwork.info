@@ -205,9 +205,11 @@ main {
 /* ---------- DETAILS ---------- */
 .details {
   margin: 6px 0 22px;
-  padding-left: 16px;
+  padding: 14px 16px;
   border-left: 1px solid transparent; /* hidden until animation done */
-  transition: border-color 0.5s ease;
+  transition: border-color 0.5s ease, background-color 0.5s ease;
+  background: rgba(10, 10, 8, 0.45);
+  border-radius: 4px;
 }
 
 .details.revealed,
