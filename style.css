@@ -357,6 +357,7 @@ footer {
 
   main {
     align-items: flex-start;
+    margin-top: 0; /* keep mobile layout untouched */
   }
 
   .content-card {
