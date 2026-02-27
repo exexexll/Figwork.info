@@ -121,7 +121,7 @@ main {
   flex: 1;
   display: flex;
   align-items: center;
-  margin-top: -6vh; /* nudge content above the horizon line */
+  margin-top: -12vh; /* nudge content above the horizon line */
 }
 
 /* Content block on the left */
