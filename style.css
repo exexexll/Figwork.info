@@ -51,7 +51,7 @@ img { display: block; max-width: 100%; }
   image-rendering: -webkit-crisp-edges;
 }
 
-/* ---------- DARK OVERLAY — text readability ---------- */
+/* ---------- DARK OVERLAY — pitch black on left, visible on right ---------- */
 .overlay {
   position: fixed;
   inset: 0;
@@ -59,9 +59,10 @@ img { display: block; max-width: 100%; }
   pointer-events: none;
   background: linear-gradient(
     105deg,
-    rgba(20, 20, 18, 0.92) 0%,
-    rgba(20, 20, 18, 0.85) 35%,
-    rgba(20, 20, 18, 0.5) 60%,
+    rgba(10, 10, 8, 1) 0%,
+    rgba(10, 10, 8, 0.98) 30%,
+    rgba(15, 15, 12, 0.9) 45%,
+    rgba(20, 20, 18, 0.5) 65%,
     rgba(20, 20, 18, 0.15) 80%,
     transparent 100%
   );
@@ -76,14 +77,15 @@ img { display: block; max-width: 100%; }
   opacity: 1;
 }
 
-/* ── Thesis page: stronger overlay for readability ── */
+/* ── Thesis page: pitch black left, visible sunset right ── */
 .thesis-page .overlay {
   background: linear-gradient(
     105deg,
-    rgba(20, 20, 18, 0.93) 0%,
-    rgba(20, 20, 18, 0.88) 40%,
-    rgba(20, 20, 18, 0.6) 65%,
-    rgba(20, 20, 18, 0.25) 85%,
+    rgba(10, 10, 8, 1) 0%,
+    rgba(10, 10, 8, 0.98) 30%,
+    rgba(15, 15, 12, 0.92) 45%,
+    rgba(20, 20, 18, 0.55) 65%,
+    rgba(20, 20, 18, 0.15) 80%,
     transparent 100%
   );
 }
@@ -220,6 +222,34 @@ main {
   font-size: 20px;
   color: var(--dim);
   margin-bottom: 0;
+}
+
+/* ---------- WORK IN PROGRESS ---------- */
+.wip-section {
+  margin: 28px 0 32px;
+}
+
+.wip-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wip-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 17px;
+  color: var(--dim);
+  opacity: 0;
+}
+
+.wip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(232, 228, 220, 0.25);
+  flex-shrink: 0;
 }
 
 /* ---------- LINK ---------- */
@@ -421,13 +451,13 @@ footer {
     padding: 12px 14px;
   }
 
-  /* On mobile, overlay is more uniform for readability */
+  /* On mobile, overlay is stronger for readability */
   .overlay {
     background: linear-gradient(
       180deg,
-      rgba(20, 20, 18, 0.92) 0%,
-      rgba(20, 20, 18, 0.8) 40%,
-      rgba(20, 20, 18, 0.55) 70%,
+      rgba(10, 10, 8, 0.97) 0%,
+      rgba(10, 10, 8, 0.9) 40%,
+      rgba(15, 15, 12, 0.6) 70%,
       rgba(20, 20, 18, 0.3) 100%
     );
   }
@@ -435,9 +465,9 @@ footer {
   .thesis-page .overlay {
     background: linear-gradient(
       180deg,
-      rgba(20, 20, 18, 0.93) 0%,
-      rgba(20, 20, 18, 0.85) 40%,
-      rgba(20, 20, 18, 0.6) 70%,
+      rgba(10, 10, 8, 0.97) 0%,
+      rgba(10, 10, 8, 0.92) 40%,
+      rgba(15, 15, 12, 0.65) 70%,
       rgba(20, 20, 18, 0.35) 100%
     );
   }
