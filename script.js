@@ -741,13 +741,14 @@ if (!isThesisPage) {
 
     const carouselInterval = setInterval(() => {
       if (carouselStopped) return;
-      idx++;
-      if (idx >= words.length) {
+      const next = idx + 1;
+      if (next >= words.length) {
         carouselStopped = true;
         clearInterval(carouselInterval);
         measureSpan.remove();
         return;
       }
+      idx = next;
       introCarousel.classList.add('is-swap');
       const nextWidth = measureWord(words[idx]);
       introCarousel.style.width = nextWidth + 'px';
