@@ -95,12 +95,7 @@ body.intro-active {
 .intro-hl {
   color: rgba(255, 190, 226, 0.95);
   text-shadow: 0 0 18px rgba(255, 140, 204, 0.18);
-  display: inline-block;
-  text-align: center;
-  transition: opacity 240ms ease, width 340ms ease;
-  overflow: hidden;
-  vertical-align: bottom;
-  line-height: inherit;
+  transition: opacity 240ms ease;
 }
 
 .intro-hl.is-swap {

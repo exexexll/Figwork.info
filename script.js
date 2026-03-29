@@ -728,15 +728,6 @@ if (!isThesisPage) {
     let idx = 0;
     let carouselStopped = false;
 
-    let maxW = introCarousel.offsetWidth;
-    const original = introCarousel.textContent;
-    for (const w of words) {
-      introCarousel.textContent = w;
-      maxW = Math.max(maxW, introCarousel.scrollWidth);
-    }
-    introCarousel.textContent = original;
-    introCarousel.style.width = maxW + 'px';
-
     const carouselInterval = setInterval(() => {
       if (carouselStopped) return;
       idx++;
