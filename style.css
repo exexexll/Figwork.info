@@ -620,14 +620,16 @@ footer {
   }
 
   .intro-caption {
-    font-size: clamp(24px, 7.5vw, 38px);
-    padding: 0 14px;
+    font-size: clamp(18px, 5.2vw, 30px);
+    padding: 0 16px;
     white-space: normal;
-    max-width: 94vw;
+    max-width: 96vw;
+    line-height: 1.25;
   }
 
   .intro-ghost {
-    font-size: clamp(24px, 7.5vw, 38px);
+    font-size: clamp(18px, 5.2vw, 30px);
+    line-height: 1.25;
   }
 
   .intro-swirl {
@@ -698,7 +700,7 @@ footer {
 
   .intro-caption,
   .intro-ghost {
-    font-size: clamp(20px, 6.5vw, 28px);
+    font-size: clamp(15px, 4.8vw, 22px);
   }
 }
 
