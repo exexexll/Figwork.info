@@ -728,7 +728,14 @@ if (!isThesisPage) {
     let idx = 0;
     let carouselStopped = false;
 
-    introCarousel.style.width = introCarousel.offsetWidth + 'px';
+    let maxW = introCarousel.offsetWidth;
+    const original = introCarousel.textContent;
+    for (const w of words) {
+      introCarousel.textContent = w;
+      maxW = Math.max(maxW, introCarousel.scrollWidth);
+    }
+    introCarousel.textContent = original;
+    introCarousel.style.width = maxW + 'px';
 
     const carouselInterval = setInterval(() => {
       if (carouselStopped) return;
@@ -741,8 +748,6 @@ if (!isThesisPage) {
       introCarousel.classList.add('is-swap');
       setTimeout(() => {
         introCarousel.textContent = words[idx];
-        const measured = introCarousel.scrollWidth;
-        introCarousel.style.width = measured + 'px';
         introCarousel.classList.remove('is-swap');
       }, 260);
     }, 1400);
