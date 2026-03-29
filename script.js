@@ -728,15 +728,29 @@ if (!isThesisPage) {
     let idx = 0;
     let carouselStopped = false;
 
+    const measureSpan = document.createElement('span');
+    measureSpan.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;font:inherit';
+    introCarousel.parentNode.appendChild(measureSpan);
+
+    function measureWord(word) {
+      measureSpan.textContent = word;
+      return measureSpan.offsetWidth;
+    }
+
+    introCarousel.style.width = measureWord(words[0]) + 'px';
+
     const carouselInterval = setInterval(() => {
       if (carouselStopped) return;
       idx++;
       if (idx >= words.length) {
         carouselStopped = true;
         clearInterval(carouselInterval);
+        measureSpan.remove();
         return;
       }
       introCarousel.classList.add('is-swap');
+      const nextWidth = measureWord(words[idx]);
+      introCarousel.style.width = nextWidth + 'px';
       setTimeout(() => {
         introCarousel.textContent = words[idx];
         introCarousel.classList.remove('is-swap');
