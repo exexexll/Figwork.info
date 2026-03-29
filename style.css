@@ -79,7 +79,7 @@ body.intro-active {
   z-index: 2;
   padding: 0 16px;
   text-align: center;
-  font-size: clamp(20px, 3vw, 48px);
+  font-size: clamp(28px, 4vw, 62px);
   line-height: 1.15;
   letter-spacing: 0.01em;
   color: rgba(239, 232, 239, 0.92);
@@ -107,7 +107,7 @@ body.intro-active {
   position: absolute;
   z-index: 4;
   font-family: var(--serif);
-  font-size: clamp(16px, 3vw, 48px);
+  font-size: clamp(28px, 4vw, 62px);
   line-height: 1.15;
   letter-spacing: 0.01em;
   color: rgba(239, 232, 239, 0.96);
