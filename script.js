@@ -58,26 +58,219 @@ const PX = isMobile ? 8 : 6;
 // Cap DPR on mobile to save GPU/memory
 const MAX_DPR = isMobile ? 1.5 : (window.devicePixelRatio || 1);
 
-const skyStops = [
-  { p: 0.0,  c: [25, 22, 20] },
-  { p: 0.15, c: [32, 28, 24] },
-  { p: 0.3,  c: [48, 36, 28] },
-  { p: 0.45, c: [75, 50, 35] },
-  { p: 0.6,  c: [120, 72, 40] },
-  { p: 0.75, c: [165, 100, 50] },
-  { p: 0.85, c: [200, 130, 60] },
-  { p: 0.93, c: [220, 165, 80] },
-  { p: 1.0,  c: [240, 195, 110] },
-];
+const LIGHTING_PHASES = {
+  night: {
+    skyStops: [
+      { p: 0.0, c: [7, 12, 23] },
+      { p: 0.15, c: [10, 17, 31] },
+      { p: 0.3, c: [15, 23, 40] },
+      { p: 0.45, c: [21, 30, 48] },
+      { p: 0.6, c: [28, 38, 55] },
+      { p: 0.75, c: [34, 45, 61] },
+      { p: 0.85, c: [39, 51, 66] },
+      { p: 0.93, c: [45, 58, 72] },
+      { p: 1.0, c: [51, 64, 78] },
+    ],
+    deepStops: [
+      { p: 0.0, c: [8, 11, 18] },
+      { p: 0.3, c: [7, 10, 16] },
+      { p: 0.5, c: [6, 9, 14] },
+      { p: 0.7, c: [7, 10, 12] },
+      { p: 0.85, c: [10, 12, 12] },
+      { p: 1.0, c: [12, 12, 10] },
+    ],
+    overlay: {
+      left: 'rgba(5, 8, 14, 0.86)',
+      mid: 'rgba(5, 8, 14, 0.55)',
+      right: 'rgba(5, 8, 14, 0.18)',
+    },
+  },
+  morning: {
+    skyStops: [
+      { p: 0.0, c: [34, 48, 72] },
+      { p: 0.15, c: [48, 64, 92] },
+      { p: 0.3, c: [76, 92, 118] },
+      { p: 0.45, c: [118, 128, 142] },
+      { p: 0.6, c: [164, 156, 142] },
+      { p: 0.75, c: [206, 176, 138] },
+      { p: 0.85, c: [224, 190, 146] },
+      { p: 0.93, c: [236, 206, 164] },
+      { p: 1.0, c: [244, 218, 178] },
+    ],
+    deepStops: [
+      { p: 0.0, c: [10, 14, 18] },
+      { p: 0.3, c: [10, 14, 18] },
+      { p: 0.5, c: [10, 14, 16] },
+      { p: 0.7, c: [13, 14, 12] },
+      { p: 0.85, c: [18, 16, 12] },
+      { p: 1.0, c: [24, 20, 14] },
+    ],
+    overlay: {
+      left: 'rgba(14, 18, 25, 0.72)',
+      mid: 'rgba(14, 18, 25, 0.43)',
+      right: 'rgba(14, 18, 25, 0.14)',
+    },
+  },
+  noon: {
+    skyStops: [
+      { p: 0.0, c: [66, 102, 150] },
+      { p: 0.15, c: [78, 116, 166] },
+      { p: 0.3, c: [100, 136, 182] },
+      { p: 0.45, c: [128, 154, 194] },
+      { p: 0.6, c: [162, 176, 206] },
+      { p: 0.75, c: [190, 196, 214] },
+      { p: 0.85, c: [206, 206, 214] },
+      { p: 0.93, c: [218, 214, 214] },
+      { p: 1.0, c: [226, 220, 214] },
+    ],
+    deepStops: [
+      { p: 0.0, c: [10, 16, 22] },
+      { p: 0.3, c: [10, 14, 20] },
+      { p: 0.5, c: [10, 14, 18] },
+      { p: 0.7, c: [14, 14, 14] },
+      { p: 0.85, c: [20, 18, 14] },
+      { p: 1.0, c: [26, 22, 16] },
+    ],
+    overlay: {
+      left: 'rgba(20, 22, 28, 0.62)',
+      mid: 'rgba(20, 22, 28, 0.33)',
+      right: 'rgba(20, 22, 28, 0.08)',
+    },
+  },
+  evening: {
+    skyStops: [
+      { p: 0.0, c: [28, 22, 26] },
+      { p: 0.15, c: [40, 28, 34] },
+      { p: 0.3, c: [66, 38, 46] },
+      { p: 0.45, c: [98, 52, 54] },
+      { p: 0.6, c: [138, 70, 58] },
+      { p: 0.75, c: [176, 96, 62] },
+      { p: 0.85, c: [206, 124, 72] },
+      { p: 0.93, c: [224, 154, 86] },
+      { p: 1.0, c: [236, 182, 104] },
+    ],
+    deepStops: [
+      { p: 0.0, c: [11, 12, 18] },
+      { p: 0.3, c: [10, 11, 16] },
+      { p: 0.5, c: [10, 11, 14] },
+      { p: 0.7, c: [12, 12, 12] },
+      { p: 0.85, c: [18, 14, 11] },
+      { p: 1.0, c: [24, 18, 12] },
+    ],
+    overlay: {
+      left: 'rgba(10, 11, 14, 0.79)',
+      mid: 'rgba(10, 11, 14, 0.5)',
+      right: 'rgba(10, 11, 14, 0.16)',
+    },
+  },
+};
 
-function skyColor(t) {
-  for (let i = 0; i < skyStops.length - 1; i++) {
-    if (t >= skyStops[i].p && t <= skyStops[i + 1].p) {
-      const lt = (t - skyStops[i].p) / (skyStops[i + 1].p - skyStops[i].p);
-      return lerpC(skyStops[i].c, skyStops[i + 1].c, lt);
+function colorFromStops(t, stops) {
+  for (let i = 0; i < stops.length - 1; i++) {
+    if (t >= stops[i].p && t <= stops[i + 1].p) {
+      const lt = (t - stops[i].p) / (stops[i + 1].p - stops[i].p);
+      return lerpC(stops[i].c, stops[i + 1].c, lt);
     }
   }
-  return skyStops[skyStops.length - 1].c;
+  return stops[stops.length - 1].c;
+}
+
+function getSunlightBlend(date = new Date()) {
+  const minutes = date.getHours() * 60 + date.getMinutes();
+  const schedule = [
+    { minute: 0, phase: 'night' },
+    { minute: 360, phase: 'morning' },  // 06:00
+    { minute: 660, phase: 'noon' },     // 11:00
+    { minute: 1020, phase: 'evening' }, // 17:00
+    { minute: 1200, phase: 'night' },   // 20:00
+    { minute: 1440, phase: 'night' },
+  ];
+
+  for (let i = 0; i < schedule.length - 1; i++) {
+    const a = schedule[i];
+    const b = schedule[i + 1];
+    if (minutes >= a.minute && minutes < b.minute) {
+      const t = (minutes - a.minute) / Math.max(1, b.minute - a.minute);
+      return { from: a.phase, to: b.phase, t };
+    }
+  }
+  return { from: 'night', to: 'night', t: 0 };
+}
+
+let manualPhase = null;
+let activePhaseForUI = '';
+let visualPhase = '';
+let phaseTransition = null;
+const PHASE_TRANSITION_MS = 1200;
+
+function currentPhaseLabel(blend) {
+  return blend.t < 0.5 ? blend.from : blend.to;
+}
+
+function setManualPhase(phase) {
+  manualPhase = phase;
+  syncTimePickerUI();
+}
+
+function syncTimePickerUI() {
+  const buttons = document.querySelectorAll('.time-square');
+  buttons.forEach((btn) => {
+    const isActive = btn.dataset.phase === activePhaseForUI;
+    btn.classList.toggle('active', isActive);
+  });
+}
+
+function setupTimePicker() {
+  const buttons = document.querySelectorAll('.time-square');
+  if (!buttons.length) return;
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const phase = btn.dataset.phase;
+      if (!phase) return;
+      setManualPhase(phase);
+    });
+  });
+}
+
+const STARFIELD = Array.from({ length: isMobile ? 26 : 54 }, (_, i) => ({
+  x: hash(i * 17.13 + 9.7),
+  y: hash(i * 31.77 + 2.1) * 0.78,
+  speed: 0.6 + hash(i * 19.7 + 1.3) * 1.2,
+  seed: hash(i * 47.17 + 7.2),
+  size: 1,
+}));
+
+function easeInOutQuad(t) {
+  return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+}
+
+function starVisibilityFromBlend(blend) {
+  if (blend.from === 'night' && blend.to === 'night') return 1;
+  if (blend.from === 'night' && blend.to !== 'night') return 1 - blend.t;
+  if (blend.to === 'night' && blend.from !== 'night') return blend.t;
+  return 0;
+}
+
+function getInterpolatedStops(kind, blend) {
+  const fromStops = LIGHTING_PHASES[blend.from][kind];
+  const toStops = LIGHTING_PHASES[blend.to][kind];
+  return fromStops.map((stop, i) => ({
+    p: stop.p,
+    c: lerpC(stop.c, toStops[i].c, blend.t),
+  }));
+}
+
+function blendOverlay(blend) {
+  const from = LIGHTING_PHASES[blend.from].overlay;
+  const to = LIGHTING_PHASES[blend.to].overlay;
+  const out = { left: from.left, mid: from.mid, right: from.right };
+  // Keep this lightweight: use target overlay colors at half-day transitions.
+  if (blend.t > 0.5) {
+    out.left = to.left;
+    out.mid = to.mid;
+    out.right = to.right;
+  }
+  return out;
 }
 
 // ── Load fig icon ──
@@ -110,48 +303,37 @@ function ensureFigSmall(gridW) {
 
 // Moving entities — fewer on mobile
 const ships = isMobile ? [
-  { x: 0.3, speed: 0.0003, size: 1, y: 0.62 },
-  { x: 0.7, speed: -0.0002, size: 1, y: 0.58 },
+  { x: 0.3, speed: 0.0003, size: 1, y: 0.62, bobPhase: hash(11), bobSpeed: 0.00055, bobAmp: 0.45, renderX: null, renderY: null },
+  { x: 0.7, speed: -0.0002, size: 1, y: 0.58, bobPhase: hash(22), bobSpeed: 0.0005, bobAmp: 0.4, renderX: null, renderY: null },
 ] : [
-  { x: 0.15, speed: 0.0003, size: 1, y: 0.62 },
-  { x: 0.55, speed: -0.0002, size: 1.4, y: 0.58 },
-  { x: 0.82, speed: 0.00015, size: 0.8, y: 0.68 },
+  { x: 0.15, speed: 0.0003, size: 1, y: 0.62, bobPhase: hash(33), bobSpeed: 0.00055, bobAmp: 0.55, renderX: null, renderY: null },
+  { x: 0.55, speed: -0.0002, size: 1.4, y: 0.58, bobPhase: hash(44), bobSpeed: 0.00052, bobAmp: 0.5, renderX: null, renderY: null },
+  { x: 0.82, speed: 0.00015, size: 0.8, y: 0.68, bobPhase: hash(55), bobSpeed: 0.00058, bobAmp: 0.38, renderX: null, renderY: null },
 ];
 
 const seagulls = isMobile ? [
-  { x: 0.3, y: 0.2, speed: 0.0006, wing: 0, wingSpeed: 0.08 },
-  { x: 0.6, y: 0.15, speed: 0.0004, wing: 0, wingSpeed: 0.06 },
-  { x: 0.8, y: 0.28, speed: 0.0005, wing: 0, wingSpeed: 0.09 },
+  { x: 0.3, y: 0.2, speed: 0.0006, wing: 0, wingSpeed: 0.08, driftAmp: 0.0035, driftSpeed: 0.00045, renderX: null, renderY: null, seed: hash(101) },
+  { x: 0.6, y: 0.15, speed: 0.0004, wing: 0, wingSpeed: 0.06, driftAmp: 0.003, driftSpeed: 0.0004, renderX: null, renderY: null, seed: hash(102) },
+  { x: 0.8, y: 0.28, speed: 0.0005, wing: 0, wingSpeed: 0.09, driftAmp: 0.0032, driftSpeed: 0.00048, renderX: null, renderY: null, seed: hash(103) },
 ] : [
-  { x: 0.3, y: 0.2, speed: 0.0006, wing: 0, wingSpeed: 0.08 },
-  { x: 0.6, y: 0.15, speed: 0.0004, wing: 0, wingSpeed: 0.06 },
-  { x: 0.8, y: 0.28, speed: 0.0005, wing: 0, wingSpeed: 0.09 },
-  { x: 0.1, y: 0.35, speed: 0.0003, wing: 0, wingSpeed: 0.07 },
-  { x: 0.45, y: 0.1, speed: 0.0007, wing: 0, wingSpeed: 0.1 },
+  { x: 0.3, y: 0.2, speed: 0.0006, wing: 0, wingSpeed: 0.08, driftAmp: 0.0038, driftSpeed: 0.00045, renderX: null, renderY: null, seed: hash(201) },
+  { x: 0.6, y: 0.15, speed: 0.0004, wing: 0, wingSpeed: 0.06, driftAmp: 0.0032, driftSpeed: 0.00041, renderX: null, renderY: null, seed: hash(202) },
+  { x: 0.8, y: 0.28, speed: 0.0005, wing: 0, wingSpeed: 0.09, driftAmp: 0.0034, driftSpeed: 0.00049, renderX: null, renderY: null, seed: hash(203) },
+  { x: 0.1, y: 0.35, speed: 0.0003, wing: 0, wingSpeed: 0.07, driftAmp: 0.003, driftSpeed: 0.00037, renderX: null, renderY: null, seed: hash(204) },
+  { x: 0.45, y: 0.1, speed: 0.0007, wing: 0, wingSpeed: 0.1, driftAmp: 0.004, driftSpeed: 0.00052, renderX: null, renderY: null, seed: hash(205) },
 ];
 
-// Deep ocean floor colors (thesis page scroll)
-const deepStops = [
-  { p: 0.0,  c: [12, 14, 16] },
-  { p: 0.3,  c: [8, 12, 18] },
-  { p: 0.5,  c: [6, 10, 16] },
-  { p: 0.7,  c: [10, 14, 12] },
-  { p: 0.85, c: [18, 16, 12] },
-  { p: 1.0,  c: [22, 20, 14] },
-];
+function deepColor(t, stops) {
+  return colorFromStops(t, stops);
+}
 
-function deepColor(t) {
-  for (let i = 0; i < deepStops.length - 1; i++) {
-    if (t >= deepStops[i].p && t <= deepStops[i + 1].p) {
-      const lt = (t - deepStops[i].p) / (deepStops[i + 1].p - deepStops[i].p);
-      return lerpC(deepStops[i].c, deepStops[i + 1].c, lt);
-    }
-  }
-  return deepStops[deepStops.length - 1].c;
+function skyColor(t, stops) {
+  return colorFromStops(t, stops);
 }
 
 // ── Canvas dimension cache (avoid re-alloc every frame) ──
 let _canvasW = 0, _canvasH = 0, _canvasDpr = 0;
+let _overlayKey = '';
 
 function syncCanvasSize() {
   const dpr = Math.min(MAX_DPR, window.devicePixelRatio || 1);
@@ -165,8 +347,60 @@ function syncCanvasSize() {
   canvas.style.height = H + 'px';
 }
 
-function drawSunset(time) {
+function drawSunset(time, frameScale = 1) {
   if (!ctx) return;
+  const baseSunlight = manualPhase
+    ? { from: manualPhase, to: manualPhase, t: 0 }
+    : getSunlightBlend(new Date());
+  const desiredPhase = manualPhase || currentPhaseLabel(baseSunlight);
+
+  if (!visualPhase) {
+    visualPhase = desiredPhase;
+  }
+
+  if (
+    desiredPhase !== visualPhase &&
+    (!phaseTransition || phaseTransition.to !== desiredPhase)
+  ) {
+    phaseTransition = {
+      from: visualPhase,
+      to: desiredPhase,
+      start: time,
+      duration: PHASE_TRANSITION_MS,
+    };
+  }
+
+  let sunlight = baseSunlight;
+  if (phaseTransition) {
+    const rawT = Math.min(1, (time - phaseTransition.start) / phaseTransition.duration);
+    const t = easeInOutQuad(rawT);
+    sunlight = { from: phaseTransition.from, to: phaseTransition.to, t };
+    if (rawT >= 1) {
+      visualPhase = phaseTransition.to;
+      phaseTransition = null;
+      if (!manualPhase) {
+        sunlight = baseSunlight;
+      }
+    }
+  } else if (!manualPhase) {
+    visualPhase = currentPhaseLabel(baseSunlight);
+  }
+
+  const uiPhase = manualPhase || (phaseTransition ? phaseTransition.to : visualPhase);
+  if (uiPhase !== activePhaseForUI) {
+    activePhaseForUI = uiPhase;
+    syncTimePickerUI();
+  }
+  const skyStopsNow = getInterpolatedStops('skyStops', sunlight);
+  const deepStopsNow = getInterpolatedStops('deepStops', sunlight);
+  const overlay = blendOverlay(sunlight);
+  const overlayKey = `${overlay.left}|${overlay.mid}|${overlay.right}`;
+  if (overlayKey !== _overlayKey) {
+    _overlayKey = overlayKey;
+    document.documentElement.style.setProperty('--overlay-left', overlay.left);
+    document.documentElement.style.setProperty('--overlay-mid', overlay.mid);
+    document.documentElement.style.setProperty('--overlay-right', overlay.right);
+  }
 
   syncCanvasSize();
   const dpr = _canvasDpr;
@@ -196,6 +430,7 @@ function drawSunset(time) {
   const figCX = Math.floor(cols * 0.6);
   const figLeft = figCX - Math.floor(figGridW / 2);
   const figTopRow = horizon - Math.floor(figGridH * 0.58);
+  const starVisibility = starVisibilityFromBlend(sunlight);
 
   // ── Draw visible rows ──
   for (let vr = 0; vr < viewRows; vr++) {
@@ -205,7 +440,7 @@ function drawSunset(time) {
 
       if (r <= horizon) {
         const t = r / horizon;
-        color = skyColor(t);
+        color = skyColor(t, skyStopsNow);
 
         const dx = c - figCX;
         const dy = r - (figTopRow + figGridH * 0.45);
@@ -216,22 +451,11 @@ function drawSunset(time) {
           color = lerpC(color, [195, 165, 195], g * g * 0.22);
         }
 
-        if (r > horizon * 0.25 && r < horizon * 0.7) {
-          const cy = (r - horizon * 0.25) / (horizon * 0.45);
-          const cn = vnoise(c * 0.012 + r * 0.003 + time * 0.00002, 1, 3);
-          const band = 1 - Math.abs(cy - 0.5) * 2.5;
-          if (band > 0 && cn > 0.48) {
-            const str = band * (cn - 0.48) * 5;
-            const cc = lerpC([80, 55, 40], [180, 130, 75], cy);
-            color = lerpC(color, cc, Math.min(str, 0.45));
-          }
-        }
-
       } else if (r <= oceanEnd) {
         const wd = (r - horizon) / (oceanEnd - horizon);
         const refRow = horizon - (r - horizon) * 0.6;
         const refT = Math.max(0, refRow) / horizon;
-        color = skyColor(Math.min(refT, 1));
+          color = skyColor(Math.min(refT, 1), skyStopsNow);
         color = [
           Math.floor(color[0] * 0.35),
           Math.floor(color[1] * 0.35),
@@ -260,7 +484,7 @@ function drawSunset(time) {
       } else {
         // DEEP OCEAN
         const dt = Math.min(1, (r - oceanEnd) / Math.max(1, deepRows));
-        color = deepColor(dt);
+        color = deepColor(dt, deepStopsNow);
 
         const ray = vnoise(c * 0.02 + dt * 0.5, 1, 2);
         if (ray > 0.55 && dt < 0.4) {
@@ -326,6 +550,20 @@ function drawSunset(time) {
     }
   }
 
+  // ── Night stars (fade by phase, subtle twinkle) ──
+  if (starVisibility > 0.05) {
+    for (const star of STARFIELD) {
+      const sx = Math.floor(star.x * cols);
+      const sy = Math.floor(star.y * Math.max(1, horizon - 2));
+      if (sy < 0 || sy >= viewRows) continue;
+
+      const twinkle = 0.5 + 0.5 * Math.sin(time * 0.0012 * star.speed + star.seed * 12.3);
+      const alpha = (0.03 + 0.2 * twinkle) * starVisibility;
+      ctx.fillStyle = `rgba(228, 234, 245, ${alpha.toFixed(3)})`;
+      ctx.fillRect(sx * PX, sy * PX, PX, PX);
+    }
+  }
+
   // ── Draw fig ──
   const small = ensureFigSmall(figGridW);
   if (small) {
@@ -362,11 +600,20 @@ function drawSunset(time) {
 
   // ── SHIPS ──
   for (const ship of ships) {
-    ship.x += ship.speed;
-    if (ship.x > 1.1) ship.x = -0.1;
-    if (ship.x < -0.1) ship.x = 1.1;
-    const sx = Math.floor(ship.x * cols);
-    const sy = Math.floor(ship.y * viewRows) - scrollRow;
+    ship.x += ship.speed * frameScale;
+    let shipWrapped = false;
+    if (ship.x > 1.1) { ship.x = -0.1; shipWrapped = true; }
+    if (ship.x < -0.1) { ship.x = 1.1; shipWrapped = true; }
+    const targetX = ship.x * cols;
+    const bob = Math.sin(time * ship.bobSpeed + ship.bobPhase * Math.PI * 2) * ship.bobAmp;
+    const targetY = ship.y * viewRows + bob;
+    if (ship.renderX == null || shipWrapped) ship.renderX = targetX;
+    if (ship.renderY == null) ship.renderY = targetY;
+    const follow = Math.min(0.48, 0.28 * frameScale);
+    ship.renderX += (targetX - ship.renderX) * follow;
+    ship.renderY += (targetY - ship.renderY) * follow;
+    const sx = Math.round(ship.renderX);
+    const sy = Math.round(ship.renderY) - scrollRow;
     if (sy < -10 || sy > viewRows + 10) continue;
     const s = ship.size;
     const hull = [16, 14, 12];
@@ -393,13 +640,22 @@ function drawSunset(time) {
 
   // ── SEAGULLS ──
   for (const g of seagulls) {
-    g.x += g.speed;
-    g.wing += g.wingSpeed;
-    if (g.x > 1.15) g.x = -0.15;
-    const gx = Math.floor(g.x * cols);
-    const gy = Math.floor(g.y * viewRows) - scrollRow;
+    g.x += g.speed * frameScale;
+    g.wing += g.wingSpeed * frameScale;
+    let gullWrapped = false;
+    if (g.x > 1.15) { g.x = -0.15; gullWrapped = true; }
+    const driftY = Math.sin(time * g.driftSpeed + g.seed * Math.PI * 2) * g.driftAmp * viewRows;
+    const targetGX = g.x * cols;
+    const targetGY = g.y * viewRows + driftY;
+    if (g.renderX == null || gullWrapped) g.renderX = targetGX;
+    if (g.renderY == null) g.renderY = targetGY;
+    const birdFollow = Math.min(0.52, 0.3 * frameScale);
+    g.renderX += (targetGX - g.renderX) * birdFollow;
+    g.renderY += (targetGY - g.renderY) * birdFollow;
+    const gx = Math.round(g.renderX);
+    const gy = Math.round(g.renderY) - scrollRow;
     if (gy < -5 || gy > viewRows + 5) continue;
-    const wingY = Math.round(Math.sin(g.wing) * 1.2);
+    const wingY = Math.round(Math.sin(g.wing) * 0.85);
     const birdC = [22, 20, 18];
     ctx.fillStyle = rgb(birdC);
     ctx.fillRect(gx * PX, gy * PX, PX, PX);
@@ -410,219 +666,169 @@ function drawSunset(time) {
   }
 }
 
-// ── Animation Loop (throttled ~30fps for smooth scroll) ──
+// ── Animation Loop (balanced smoothness/perf) ──
 if (!prefersReducedMotion && ctx) {
   let lastFrame = 0;
-  const FRAME_MS = 33; // ~30fps — plenty for pixel art, keeps scroll smooth
+  const FRAME_MS = isMobile ? 30 : 24; // mobile ~33fps, desktop ~41fps
   function sunsetLoop(time) {
     requestAnimationFrame(sunsetLoop);
     if (time - lastFrame < FRAME_MS) return;
+    const deltaMs = lastFrame ? (time - lastFrame) : FRAME_MS;
     lastFrame = time;
-    drawSunset(time);
+    const frameScale = Math.min(2.2, deltaMs / FRAME_MS);
+    drawSunset(time, frameScale);
   }
   requestAnimationFrame(sunsetLoop);
 }
 
+setupTimePicker();
+
 
 // ──────────────────────────────────────────
-// 2. SCRAMBLE DECODE — only on landing page (desktop only)
+// 2. LANDING INTRO + TEXT REVEAL
 // ──────────────────────────────────────────
-const isMobileDevice = window.matchMedia('(max-width: 699px)').matches;
-console.log('[Figwork] mobile:', isMobileDevice, 'innerWidth:', window.innerWidth);
+function runLandingReveal() {
+  const decodeEls = [...document.querySelectorAll('.decode')];
+  const link = document.querySelector('.link');
+  const detail = document.querySelector('.details');
+  const waitlist = document.querySelector('.waitlist-wrap');
 
-// Mobile: skip scramble, just blur in
-if (!isThesisPage && isMobileDevice && !prefersReducedMotion) {
-  const decodeEls = document.querySelectorAll('.decode');
-  decodeEls.forEach(el => {
-    el.style.opacity = '0';
-    el.style.filter = 'blur(8px)';
-    el.style.transition = 'opacity 1.2s ease, filter 1.2s ease';
-  });
-  setTimeout(() => {
-    decodeEls.forEach(el => {
-      el.style.opacity = '1';
-      el.style.filter = 'blur(0px)';
+  if (prefersReducedMotion) {
+    decodeEls.forEach((el) => el.classList.add('visible'));
+    if (link) link.classList.add('revealed', 'visible');
+    if (detail) detail.classList.add('revealed');
+    if (waitlist) waitlist.classList.add('visible');
+  } else {
+    decodeEls.forEach((el, idx) => {
+      setTimeout(() => {
+        el.classList.add('visible');
+      }, 220 + idx * 120);
     });
-    const wl = document.querySelector('.waitlist-wrap');
-    if (wl) wl.classList.add('visible');
-    const det = document.querySelector('.details');
-    if (det) det.classList.add('revealed');
-    const lnk = document.querySelector('.link');
-    if (lnk) lnk.classList.add('revealed');
-  }, 400);
+
+    const totalDelay = 220 + decodeEls.length * 120 + 120;
+    setTimeout(() => {
+      if (detail) detail.classList.add('revealed');
+      if (link) link.classList.add('revealed', 'visible');
+      if (waitlist) waitlist.classList.add('visible');
+    }, totalDelay);
+  }
 }
 
-// Desktop: full scramble decode
-if (!isThesisPage && !isMobileDevice && !prefersReducedMotion) {
-  const ALPHA_LOWER = 'abcdefghijklmnopqrstuvwxyz';
-  const ALPHA_UPPER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  function randSameCase(ch) {
-    if (ch >= 'A' && ch <= 'Z') return ALPHA_UPPER[Math.floor(Math.random() * 26)];
-    if (ch >= 'a' && ch <= 'z') return ALPHA_LOWER[Math.floor(Math.random() * 26)];
-    return ch;
-  }
-  function isLetter(ch) { return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z'); }
+if (!isThesisPage) {
+  const introScreen = document.getElementById('introScreen');
+  const introCaption = document.getElementById('introCaption');
+  const introCarousel = document.getElementById('introCarousel');
 
-  (function runLineDecode() {
-    const els = [...document.querySelectorAll('.decode')];
-    if (!els.length) return;
+  if (!introScreen || !introCaption || !introCarousel || prefersReducedMotion) {
+    if (introScreen) introScreen.remove();
+    runLandingReveal();
+  } else {
+    document.body.classList.add('intro-active');
+    const words = ['AI', 'HR', 'Business'];
+    let idx = 0;
+    let carouselStopped = false;
 
-    const originals = [];
+    introCarousel.style.width = introCarousel.offsetWidth + 'px';
 
-    /* ── Phase 1: Wrap chars in spans, group words ── */
-    for (const el of els) {
-      originals.push({ el, html: el.innerHTML });
-      el.style.opacity = '1';
-
-      const textNodes = [];
-      const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
-      while (walker.nextNode()) textNodes.push(walker.currentNode);
-
-      for (const node of textNodes) {
-        const frag = document.createDocumentFragment();
-        const segments = node.textContent.split(/(\s+)/);
-
-        for (const seg of segments) {
-          if (!seg) continue;
-          if (/^\s+$/.test(seg)) {
-            frag.appendChild(document.createTextNode(' '));
-          } else {
-            const wordWrap = document.createElement('span');
-            wordWrap.style.whiteSpace = 'nowrap';
-            for (const ch of seg) {
-              const span = document.createElement('span');
-              span.className = 'ch';
-              span.dataset.real = ch;
-              span.textContent = ch;
-              span.style.opacity = '0';
-              wordWrap.appendChild(span);
-            }
-            frag.appendChild(wordWrap);
-          }
-        }
-        node.parentNode.replaceChild(frag, node);
-      }
-    }
-
-    /* ── Phase 1b: Prevent layout shifts during scramble ── */
-    const isMobileAnim = window.innerWidth < 700;
-    const allSpans = document.querySelectorAll('.ch');
-    if (!isMobileAnim) {
-      /* Desktop: lock each character span to its measured width */
-      for (const span of allSpans) {
-        const w = span.getBoundingClientRect().width;
-        span.style.display = 'inline-block';
-        span.style.width = w + 'px';
-        span.style.textAlign = 'center';
-      }
-    } else {
-      /* Mobile: lock each WORD wrapper width so line breaks stay stable */
-      const wordWraps = document.querySelectorAll('.decode span[style*="nowrap"]');
-      for (const ww of wordWraps) {
-        const w = ww.getBoundingClientRect().width;
-        ww.style.display = 'inline-block';
-        ww.style.width = w + 'px';
-      }
-    }
-
-    /* ── Phase 2: Group chars into visual lines ── */
-    const LINE_THRESH = 4;
-    const lines = [];
-
-    for (const { el } of originals) {
-      for (const span of el.querySelectorAll('.ch')) {
-        const y = span.getBoundingClientRect().top;
-        let line = lines.find(l => Math.abs(l.y - y) < LINE_THRESH);
-        if (!line) { line = { y, chars: [] }; lines.push(line); }
-        line.chars.push(span);
-      }
-    }
-    lines.sort((a, b) => a.y - b.y);
-
-    /* ── Phase 3: Timing ── */
-    const GROUP_SIZE    = 4;
-    const GROUP_GAP     = 50;
-    const SCRAMBLE_DUR  = 800;
-    const SCRAMBLE_TICK = 40;
-    const LINE_GAP      = 350;
-    const START_DELAY   = 600;
-
-    /* ── Phase 4: Animate ── */
-    const t0 = performance.now() + START_DELAY;
-    let finished = false;
-
-    function tick(now) {
-      if (finished) return;
-      const elapsed = now - t0;
-      if (elapsed < 0) { requestAnimationFrame(tick); return; }
-
-      let allDone = true;
-
-      for (let li = 0; li < lines.length; li++) {
-        const lineStart = li * LINE_GAP;
-        if (elapsed < lineStart) { allDone = false; continue; }
-
-        const chars = lines[li].chars;
-
-        for (let ci = 0; ci < chars.length; ci++) {
-          const groupIdx = Math.floor(ci / GROUP_SIZE);
-          const charStart = lineStart + groupIdx * GROUP_GAP;
-          const charEnd   = charStart + SCRAMBLE_DUR;
-
-          if (elapsed < charStart) { allDone = false; continue; }
-
-          const span = chars[ci];
-          const real = span.dataset.real;
-
-          if (elapsed >= charEnd) {
-            if (span.textContent !== real || span.style.opacity !== '1') {
-              span.textContent = real;
-              span.style.opacity = '1';
-            }
-          } else {
-            allDone = false;
-            span.style.opacity = '1';
-
-            if (isLetter(real)) {
-              const dt = elapsed - charStart;
-              const tickIdx = Math.floor(dt / SCRAMBLE_TICK);
-              const prev = span.dataset.tick | 0;
-              if (tickIdx !== prev) {
-                span.dataset.tick = tickIdx;
-                span.textContent = randSameCase(real);
-              }
-            } else {
-              span.textContent = real;
-            }
-          }
-        }
-      }
-
-      if (allDone) {
-        const wl = document.querySelector('.waitlist-wrap');
-        if (wl) wl.classList.add('visible');
-        const det = document.querySelector('.details');
-        if (det) det.classList.add('revealed');
-        const lnk = document.querySelector('.link');
-        if (lnk) lnk.classList.add('revealed');
-        finished = true;
+    const carouselInterval = setInterval(() => {
+      if (carouselStopped) return;
+      idx++;
+      if (idx >= words.length) {
+        carouselStopped = true;
+        clearInterval(carouselInterval);
         return;
       }
+      introCarousel.classList.add('is-swap');
+      setTimeout(() => {
+        introCarousel.textContent = words[idx];
+        const measured = introCarousel.scrollWidth;
+        introCarousel.style.width = measured + 'px';
+        introCarousel.classList.remove('is-swap');
+      }, 260);
+    }, 1400);
 
-      requestAnimationFrame(tick);
-    }
+    const CAROUSEL_DURATION = 1400 * words.length + 600;
+    const FADE_DURATION = 420;
+    const PAUSE_AFTER_FADE = 280;
+    const SLIDE_WAIT = 900;
+    const HOLD_FINAL = 2400;
 
-    requestAnimationFrame(tick);
-  })();
-} else if (!isThesisPage && prefersReducedMotion) {
-  // If reduced motion, just show everything immediately
-  document.querySelectorAll('.decode').forEach(el => { el.style.opacity = '1'; });
-  const wl = document.querySelector('.waitlist-wrap');
-  if (wl) wl.classList.add('visible');
-  const det = document.querySelector('.details');
-  if (det) det.classList.add('revealed');
-  const lnk = document.querySelector('.link');
-  if (lnk) lnk.classList.add('revealed');
+    setTimeout(() => {
+      clearInterval(carouselInterval);
+
+      const keepSpans = introCaption.querySelectorAll('[data-keep]');
+      const measurements = [];
+      keepSpans.forEach((span) => {
+        const r = span.getBoundingClientRect();
+        measurements.push({ text: span.dataset.keep, left: r.left, top: r.top });
+      });
+
+      const screenW = introScreen.clientWidth;
+      const screenH = introScreen.clientHeight;
+
+      const ghosts = measurements.map((m) => {
+        const el = document.createElement('span');
+        el.className = 'intro-ghost';
+        el.textContent = m.text;
+        el.style.left = m.left + 'px';
+        el.style.top = m.top + 'px';
+        introScreen.appendChild(el);
+        return el;
+      });
+
+      // Phase A: fade out caption, show ghosts at original positions
+      introCaption.classList.add('is-fading');
+      requestAnimationFrame(() => {
+        ghosts.forEach((el) => el.classList.add('is-placed'));
+      });
+
+      // Phase B: after fade completes + pause, slide ghosts together + show icon
+      setTimeout(() => {
+        const tryW = ghosts[0].offsetWidth;
+        const figW = ghosts[1].offsetWidth;
+        const workW = ghosts[2].offsetWidth;
+        const fontSize = parseFloat(getComputedStyle(ghosts[0]).fontSize);
+        const iconSize = Math.round(fontSize * 1.15);
+        const wordGap = 8;
+        const iconGap = Math.round(iconSize * 0.25);
+        const totalW = tryW + wordGap + figW + workW + iconGap + iconSize;
+        const startX = (screenW - totalW) / 2;
+        const targetY = (screenH / 2) - (fontSize * 0.55);
+
+        ghosts[0].style.left = startX + 'px';
+        ghosts[0].style.top = targetY + 'px';
+        ghosts[1].style.left = (startX + tryW + wordGap) + 'px';
+        ghosts[1].style.top = targetY + 'px';
+        ghosts[2].style.left = (startX + tryW + wordGap + figW) + 'px';
+        ghosts[2].style.top = targetY + 'px';
+
+        setTimeout(() => {
+          const icon = new Image();
+          icon.src = 'iconfigwork.png';
+          icon.className = 'intro-icon';
+          icon.style.width = iconSize + 'px';
+          icon.style.height = iconSize + 'px';
+          icon.style.objectFit = 'contain';
+          icon.style.left = (startX + tryW + wordGap + figW + workW + iconGap) + 'px';
+          icon.style.top = (targetY + (fontSize - iconSize) / 2) + 'px';
+          introScreen.appendChild(icon);
+        }, 500);
+      }, FADE_DURATION + PAUSE_AFTER_FADE);
+
+    }, CAROUSEL_DURATION);
+
+    const mergeTotal = CAROUSEL_DURATION + FADE_DURATION + PAUSE_AFTER_FADE + SLIDE_WAIT + HOLD_FINAL;
+
+    setTimeout(() => {
+      introScreen.classList.add('is-exit');
+      runLandingReveal();
+    }, mergeTotal);
+
+    setTimeout(() => {
+      introScreen.remove();
+      document.body.classList.remove('intro-active');
+    }, mergeTotal + 900);
+  }
 }
 
 

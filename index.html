@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5" />
-  <title>Figwork — AI-Powered Human Intelligence Platform</title>
-  <meta name="description" content="Figwork is a human intelligence platform. Describe what you need in detail, and our AI agent takes care of the rest — sourcing the right people, managing the work, and making revisions to deliver quality results." />
+  <title>Figwork — Human Intelligence Infrastructure</title>
+  <meta name="description" content="Figwork helps businesses scope, execute, and verify complex work through an AI-guided network of vetted human talent." />
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Figwork — AI-Powered Human Intelligence Platform" />
-  <meta property="og:description" content="Describe what you need in detail. Our AI agent takes care of the rest — sourcing the right people, managing the work, and delivering quality results." />
+  <meta property="og:title" content="Figwork — Human Intelligence Infrastructure" />
+  <meta property="og:description" content="AI-guided execution with vetted human talent, structured workflows, and verification built in." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://figwork.info" />
   <meta property="og:image" content="https://figwork.info/og-image.png" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Figwork — AI-Powered Human Intelligence Platform" />
-  <meta name="twitter:description" content="Describe what you need in detail. Our AI agent takes care of the rest." />
+  <meta name="twitter:title" content="Figwork — Human Intelligence Infrastructure" />
+  <meta name="twitter:description" content="AI-guided execution with vetted human talent and built-in quality verification." />
   <meta name="twitter:image" content="https://figwork.info/og-image.png" />
 
   <!-- Favicon -->
@@ -29,10 +29,14 @@
   <!-- Preconnect for fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=3" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css?v=29" />
 </head>
 <body>
+  <div class="intro-screen" id="introScreen" aria-hidden="true">
+    <div class="intro-swirl" aria-hidden="true"></div>
+    <p class="intro-caption" id="introCaption">Still <span data-keep="Try">Trying</span> To <span data-keep="Fig">Figure</span> Out How <span class="intro-hl" id="introCarousel">AI</span> <span data-keep="work">Works</span>?</p>
+  </div>
 
   <!-- Full-screen animated pixel sunset -->
   <canvas id="sunsetCanvas" aria-hidden="true"></canvas>
@@ -48,9 +52,9 @@
   <main>
     <div class="content-card">
       <p class="text decode">
-        <em>Figwork</em> is a human intelligence platform that completes
-        and verifies work for businesses in the AI economy. We maintain a
-        pool of 200,000+ vetted talent in our network, with expertise
+        <em>Figwork</em> is a talent sourcing platform that builds efficient,
+        cost-saving solution for business in the AI economy. We maintain a
+        pool of 200,000+ vetted contractors in our network, with expertise
         across all fields.
       </p>
 
@@ -84,6 +88,13 @@
 
   <footer></footer>
 
-  <script src="script.js?v=3"></script>
+  <div class="time-picker" aria-label="Time of day view">
+    <button class="time-square" data-phase="morning" title="Morning" aria-label="Morning view"></button>
+    <button class="time-square" data-phase="noon" title="Noon" aria-label="Noon view"></button>
+    <button class="time-square" data-phase="evening" title="Evening" aria-label="Evening view"></button>
+    <button class="time-square" data-phase="night" title="Night" aria-label="Night view"></button>
+  </div>
+
+  <script src="script.js?v=31"></script>
 </body>
 </html>

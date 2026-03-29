@@ -1,18 +1,40 @@
 const express = require('express');
 const path = require('path');
 const { Pool } = require('pg');
+const crypto = require('crypto');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
+const isProduction = process.env.NODE_ENV === 'production';
+
+if (isProduction) {
+  app.set('trust proxy', 1);
+}
+const waitlistRateLimit = new Map();
+const WAITLIST_WINDOW_MS = 60 * 1000;
+const WAITLIST_MAX_REQUESTS = 8;
+
+// Periodically prune stale IP buckets to prevent unbounded growth.
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, timestamps] of waitlistRateLimit.entries()) {
+    const recent = timestamps.filter((ts) => now - ts < WAITLIST_WINDOW_MS);
+    if (recent.length === 0) {
+      waitlistRateLimit.delete(ip);
+    } else {
+      waitlistRateLimit.set(ip, recent);
+    }
+  }
+}, WAITLIST_WINDOW_MS).unref();
 
 // ─── Database ───────────────────────────────
-// Railway injects DATABASE_URL when you add a Postgres plugin
 const pool = process.env.DATABASE_URL
   ? new Pool({
       connectionString: process.env.DATABASE_URL,
       ssl: process.env.DATABASE_URL.includes('localhost')
         ? false
-        : { rejectUnauthorized: false },
+        : { rejectUnauthorized: true },
+      max: 5,
     })
   : null;
 
@@ -41,6 +63,9 @@ app.use(express.json());
 
 // Security headers
 app.use((req, res, next) => {
+  if (isProduction) {
+    res.setHeader('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
+  }
   res.setHeader('X-Frame-Options', 'DENY');
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
@@ -51,8 +76,17 @@ app.use((req, res, next) => {
 // ─── API: Waitlist ──────────────────────────
 app.post('/api/waitlist', async (req, res) => {
   const { email } = req.body;
+  const forwarded = req.headers['x-forwarded-for'];
+  const ip = String(req.ip || (Array.isArray(forwarded) ? forwarded[0] : forwarded) || 'unknown').split(',')[0].trim();
+  const now = Date.now();
+  const recent = (waitlistRateLimit.get(ip) || []).filter((ts) => now - ts < WAITLIST_WINDOW_MS);
+  if (recent.length >= WAITLIST_MAX_REQUESTS) {
+    return res.status(429).json({ error: 'Too many requests. Please try again later.' });
+  }
+  recent.push(now);
+  waitlistRateLimit.set(ip, recent);
 
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (typeof email !== 'string' || email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return res.status(400).json({ error: 'Valid email required' });
   }
 
@@ -79,8 +113,15 @@ app.post('/api/waitlist', async (req, res) => {
 
 // ─── API: List emails (protected, for you only) ──
 app.get('/api/waitlist', async (req, res) => {
-  const secret = req.headers['x-admin-key'];
-  if (secret !== process.env.ADMIN_KEY) {
+  const secret = String(req.headers['x-admin-key'] || '');
+  const configuredAdminKey = String(process.env.ADMIN_KEY || '');
+  const secretBuf = Buffer.from(secret, 'utf8');
+  const expectedBuf = Buffer.from(configuredAdminKey, 'utf8');
+  const isAuthorized =
+    configuredAdminKey.length > 0 &&
+    secretBuf.length === expectedBuf.length &&
+    crypto.timingSafeEqual(secretBuf, expectedBuf);
+  if (!isAuthorized) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
@@ -92,7 +133,8 @@ app.get('/api/waitlist', async (req, res) => {
     );
     return res.json({ emails: result.rows });
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    console.error('✗ Waitlist list error:', err.message);
+    return res.status(500).json({ error: 'Server error' });
   }
 });
 
@@ -120,7 +162,10 @@ app.use(
   })
 );
 
-// Clean URL: /thesis → thesis.html
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
 app.get('/thesis', (req, res) => {
   res.sendFile(path.join(STATIC_DIR, 'thesis.html'));
 });
@@ -132,7 +177,17 @@ app.get('*', (req, res) => {
 
 // ─── Start ──────────────────────────────────
 initDB().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Figwork landing → http://localhost:${PORT}`);
+  const server = app.listen(PORT, () => {
+    console.log(`Figwork landing listening on port ${PORT}`);
   });
+
+  const shutdown = async (signal) => {
+    console.log(`Received ${signal}, shutting down...`);
+    server.close();
+    if (pool) await pool.end();
+    process.exit(0);
+  };
+
+  process.on('SIGINT', () => shutdown('SIGINT'));
+  process.on('SIGTERM', () => shutdown('SIGTERM'));
 });
