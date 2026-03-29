@@ -724,7 +724,7 @@ if (!isThesisPage) {
     runLandingReveal();
   } else {
     document.body.classList.add('intro-active');
-    const words = ['AI', 'HR', 'Business'];
+    const words = ['AI', 'Hiring', 'Outsourcing'];
     let idx = 0;
     let carouselStopped = false;
 
