@@ -755,13 +755,13 @@ if (!isThesisPage) {
         introCarousel.textContent = words[idx];
         introCarousel.classList.remove('is-swap');
       }, 260);
-    }, 1400);
+    }, 1700);
 
-    const CAROUSEL_DURATION = 1400 * words.length + 600;
-    const FADE_DURATION = 420;
-    const PAUSE_AFTER_FADE = 280;
-    const SLIDE_WAIT = 900;
-    const HOLD_FINAL = 2400;
+    const CAROUSEL_DURATION = 1700 * words.length + 800;
+    const FADE_DURATION = 500;
+    const PAUSE_AFTER_FADE = 350;
+    const SLIDE_WAIT = 1100;
+    const HOLD_FINAL = 2800;
 
     setTimeout(() => {
       clearInterval(carouselInterval);
