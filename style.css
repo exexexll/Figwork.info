@@ -272,11 +272,11 @@ main {
 
 /* ---------- TEXT (landing page) ---------- */
 .text {
-  font-size: clamp(14px, 1.15vw, 17px);
-  line-height: 1.7;
+  font-size: clamp(18px, 1.5vw, 24px);
+  line-height: 1.65;
   margin-bottom: 20px;
   font-weight: 400;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.005em;
   color: rgba(232, 228, 220, 0.72);
   opacity: 0;
   transform: translateY(8px);
@@ -288,12 +288,8 @@ main {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: clamp(24px, 2.2vw, 36px);
-  letter-spacing: -0.025em;
-  line-height: 1.2;
+  letter-spacing: -0.02em;
   color: var(--text);
-  display: block;
-  margin-bottom: 10px;
 }
 
 .text.body-copy {
@@ -302,11 +298,11 @@ main {
 
 .text.secondary {
   color: rgba(154, 150, 140, 0.5);
-  font-size: clamp(10px, 0.8vw, 12px);
+  font-size: clamp(11px, 0.9vw, 14px);
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .school-line {
@@ -314,7 +310,7 @@ main {
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
-  font-size: clamp(11px, 0.85vw, 13px);
+  font-size: clamp(14px, 1.1vw, 18px);
   color: rgba(232, 228, 220, 0.3);
   letter-spacing: 0.02em;
   margin: 4px 0 22px;
@@ -331,7 +327,7 @@ main {
 }
 
 .school-icon {
-  height: 20px;
+  height: 28px;
   width: auto;
   filter: invert(1) grayscale(1);
   opacity: 0.45;
@@ -352,7 +348,7 @@ main {
 }
 
 .contact-email a {
-  font-size: clamp(12px, 0.95vw, 14px);
+  font-size: clamp(15px, 1.2vw, 19px);
   color: rgba(154, 150, 140, 0.5);
   text-decoration: none;
   transition: color 0.3s ease;
@@ -401,8 +397,8 @@ main {
 .wip-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: clamp(12px, 0.95vw, 14px);
+  gap: 10px;
+  font-size: clamp(15px, 1.2vw, 19px);
   color: rgba(154, 150, 140, 0.7);
   opacity: 0;
   transform: translateY(8px);
@@ -421,7 +417,7 @@ main {
 /* ---------- LINK ---------- */
 .link {
   display: inline-block;
-  font-size: clamp(14px, 1.1vw, 18px);
+  font-size: clamp(18px, 1.5vw, 24px);
   font-weight: 500;
   color: var(--text);
   border-bottom: 1px solid transparent; /* hidden until animation done */
@@ -647,20 +643,20 @@ footer {
   .text,
   .detail,
   .link {
-    font-size: 14px;
+    font-size: 17px;
   }
 
   .text {
-    line-height: 1.65;
+    line-height: 1.6;
     margin-bottom: 16px;
   }
 
-  .text em {
-    font-size: 22px;
+  .wip-item {
+    font-size: 14px;
   }
 
-  .wip-item {
-    font-size: 12px;
+  .school-icon {
+    height: 22px;
   }
 
   .intro-caption {
