@@ -296,12 +296,48 @@ main {
   margin-bottom: 10px;
 }
 
+.text.body-copy {
+  margin-top: -8px;
+}
+
 .text.secondary {
-  color: var(--dim);
-  font-size: clamp(12px, 1vw, 15px);
+  color: rgba(154, 150, 140, 0.5);
+  font-size: clamp(10px, 0.8vw, 12px);
   font-weight: 500;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.contact-section {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(232, 228, 220, 0.06);
+}
+
+.contact-email {
+  margin-top: 8px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.75s ease, transform 0.75s ease, filter 0.75s ease;
+  filter: blur(2px);
+}
+
+.contact-email a {
+  font-size: clamp(12px, 0.95vw, 14px);
+  color: rgba(154, 150, 140, 0.5);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.contact-email a:hover {
+  color: var(--text);
+}
+
+.contact-email.visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  filter: blur(0) !important;
 }
 
 /* ---------- DETAILS ---------- */
