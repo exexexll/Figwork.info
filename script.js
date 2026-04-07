@@ -716,129 +716,22 @@ function runLandingReveal() {
 
 if (!isThesisPage) {
   const introScreen = document.getElementById('introScreen');
-  const introCaption = document.getElementById('introCaption');
-  const introCarousel = document.getElementById('introCarousel');
 
-  if (!introScreen || !introCaption || !introCarousel || prefersReducedMotion) {
+  if (!introScreen || prefersReducedMotion) {
     if (introScreen) introScreen.remove();
     runLandingReveal();
   } else {
     document.body.classList.add('intro-active');
-    const words = ['AI', 'Hiring', 'Your Business'];
-    let idx = 0;
-    let carouselStopped = false;
-
-    const measureSpan = document.createElement('span');
-    measureSpan.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;font:inherit';
-    introCarousel.parentNode.appendChild(measureSpan);
-
-    function measureWord(word) {
-      measureSpan.textContent = word;
-      return measureSpan.offsetWidth;
-    }
-
-    introCarousel.style.width = measureWord(words[0]) + 'px';
-
-    const carouselInterval = setInterval(() => {
-      if (carouselStopped) return;
-      const next = idx + 1;
-      if (next >= words.length) {
-        carouselStopped = true;
-        clearInterval(carouselInterval);
-        measureSpan.remove();
-        return;
-      }
-      idx = next;
-      introCarousel.classList.add('is-swap');
-      const nextWidth = measureWord(words[idx]);
-      introCarousel.style.width = nextWidth + 'px';
-      setTimeout(() => {
-        introCarousel.textContent = words[idx];
-        introCarousel.classList.remove('is-swap');
-      }, 260);
-    }, 1700);
-
-    const CAROUSEL_DURATION = 1700 * words.length + 800;
-    const FADE_DURATION = 500;
-    const PAUSE_AFTER_FADE = 350;
-    const SLIDE_WAIT = 1100;
-    const HOLD_FINAL = 2800;
-
-    setTimeout(() => {
-      clearInterval(carouselInterval);
-
-      const keepSpans = introCaption.querySelectorAll('[data-keep]');
-      const measurements = [];
-      keepSpans.forEach((span) => {
-        const r = span.getBoundingClientRect();
-        measurements.push({ text: span.dataset.keep, left: r.left, top: r.top });
-      });
-
-      const screenW = introScreen.clientWidth;
-      const screenH = introScreen.clientHeight;
-
-      const ghosts = measurements.map((m) => {
-        const el = document.createElement('span');
-        el.className = 'intro-ghost';
-        el.textContent = m.text;
-        el.style.left = m.left + 'px';
-        el.style.top = m.top + 'px';
-        introScreen.appendChild(el);
-        return el;
-      });
-
-      // Phase A: fade out caption, show ghosts at original positions
-      introCaption.classList.add('is-fading');
-      requestAnimationFrame(() => {
-        ghosts.forEach((el) => el.classList.add('is-placed'));
-      });
-
-      // Phase B: after fade completes + pause, slide ghosts together + show icon
-      setTimeout(() => {
-        const tryW = ghosts[0].offsetWidth;
-        const figW = ghosts[1].offsetWidth;
-        const workW = ghosts[2].offsetWidth;
-        const fontSize = parseFloat(getComputedStyle(ghosts[0]).fontSize);
-        const iconSize = Math.round(fontSize * 1.15);
-        const wordGap = 8;
-        const iconGap = Math.round(iconSize * 0.25);
-        const totalW = tryW + wordGap + figW + workW + iconGap + iconSize;
-        const startX = (screenW - totalW) / 2;
-        const targetY = (screenH / 2) - (fontSize * 0.55);
-
-        ghosts[0].style.left = startX + 'px';
-        ghosts[0].style.top = targetY + 'px';
-        ghosts[1].style.left = (startX + tryW + wordGap) + 'px';
-        ghosts[1].style.top = targetY + 'px';
-        ghosts[2].style.left = (startX + tryW + wordGap + figW) + 'px';
-        ghosts[2].style.top = targetY + 'px';
-
-        setTimeout(() => {
-          const icon = new Image();
-          icon.src = 'iconfigwork.png';
-          icon.className = 'intro-icon';
-          icon.style.width = iconSize + 'px';
-          icon.style.height = iconSize + 'px';
-          icon.style.objectFit = 'contain';
-          icon.style.left = (startX + tryW + wordGap + figW + workW + iconGap) + 'px';
-          icon.style.top = (targetY + (fontSize - iconSize) / 2) + 'px';
-          introScreen.appendChild(icon);
-        }, 500);
-      }, FADE_DURATION + PAUSE_AFTER_FADE);
-
-    }, CAROUSEL_DURATION);
-
-    const mergeTotal = CAROUSEL_DURATION + FADE_DURATION + PAUSE_AFTER_FADE + SLIDE_WAIT + HOLD_FINAL;
 
     setTimeout(() => {
       introScreen.classList.add('is-exit');
       runLandingReveal();
-    }, mergeTotal);
+    }, 2400);
 
     setTimeout(() => {
       introScreen.remove();
       document.body.classList.remove('intro-active');
-    }, mergeTotal + 900);
+    }, 3200);
   }
 }
 
