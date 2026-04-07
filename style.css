@@ -309,6 +309,22 @@ main {
   margin-bottom: 12px;
 }
 
+.school-logos-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  vertical-align: middle;
+  margin: 0 2px;
+}
+
+.school-logo-inline {
+  height: 18px;
+  width: auto;
+  opacity: 0.55;
+  filter: brightness(1.6);
+  vertical-align: middle;
+}
+
 .contact-section {
   margin-top: 32px;
   padding-top: 24px;
