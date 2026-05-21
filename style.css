@@ -672,6 +672,12 @@ main {
   border-top: 1px solid var(--hairline);
 }
 
+.footer-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+}
+
 .footer-link { transition: color 160ms ease; }
 .footer-link:hover { color: var(--orange); }
 
