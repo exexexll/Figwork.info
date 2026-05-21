@@ -17,6 +17,7 @@ COPY style.css public/
 COPY script.js public/
 COPY iconfigwork.png public/
 COPY figwork-logo-dark.png public/
+COPY student-grid public/student-grid
 COPY robots.txt public/
 COPY sitemap.xml public/
 

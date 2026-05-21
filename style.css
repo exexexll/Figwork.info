@@ -458,7 +458,7 @@ main {
   padding: 0 clamp(32px, 7vw, 96px);
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 72px;
 }
 
 .schools-row {
@@ -487,6 +487,73 @@ main {
   text-transform: uppercase;
   color: var(--muted);
   opacity: 0.6;
+}
+
+/* Student mosaic — gritty, low-contrast portraits under university row */
+.student-mosaic {
+  width: 100vw;
+  max-width: 100vw;
+  margin-top: clamp(92px, 14vh, 170px); /* push lower, away from school names */
+  margin-bottom: -96px; /* sit against bottom edge of hero */
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+.student-mosaic-grid {
+  --mosaic-cols: 26; /* smaller squares, more tiles across */
+  position: relative;
+  display: grid !important;
+  grid-template-columns: repeat(var(--mosaic-cols), minmax(0, 1fr));
+  grid-template-rows: repeat(2, 1fr);
+  gap: 1px; /* thin grey split lines */
+  padding: 1px;
+  background: rgba(77, 91, 106, 0.16); /* softer line dividers */
+  overflow: hidden;
+  line-height: 0;
+}
+
+.student-mosaic-tile {
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
+  overflow: hidden;
+}
+
+.student-mosaic-tile img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  filter: grayscale(1) sepia(0.28) saturate(0.03) contrast(0.9) brightness(0.5);
+  opacity: 0.18; /* contour-level visibility only */
+  transform: scale(1.2);
+  transform-origin: center;
+}
+
+.student-mosaic-grid::before,
+.student-mosaic-grid::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.student-mosaic-grid::before {
+  /* Match the same muted-teal family used for university names */
+  background: rgba(119, 138, 144, 0.68);
+  mix-blend-mode: multiply;
+}
+
+.student-mosaic-grid::after {
+  opacity: 0.9;
+  mix-blend-mode: multiply;
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='2.4' numOctaves='4' stitchTiles='stitch' seed='13'/><feColorMatrix values='0 0 0 0 0.16  0 0 0 0 0.19  0 0 0 0 0.21  0 0 0 0.45 0'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>"),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='84' height='84'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2' stitchTiles='stitch' seed='19'/><feColorMatrix values='0 0 0 0 0.13  0 0 0 0 0.16  0 0 0 0 0.19  0 0 0 0.22 0'/></filter><rect width='84' height='84' filter='url(%23n)'/></svg>");
+  background-size: 160px 160px, 84px 84px;
 }
 
 /* ----- Schools — quiet caps row in muted teal ----- */
@@ -660,6 +727,17 @@ main {
 
   .hero-title { font-size: clamp(2.1rem, 8.4vw, 2.9rem); line-height: 1.06; }
   .schools { margin-top: 32px; font-size: 10px; }
+  .student-mosaic {
+    margin-top: clamp(62px, 10vh, 110px);
+    margin-bottom: -60px;
+  }
+  .student-mosaic-grid {
+    --mosaic-cols: 14;
+    grid-template-rows: repeat(2, 1fr);
+  }
+  .student-mosaic-tile:nth-child(n + 29) {
+    display: none;
+  }
 
   .site-footer { padding: 20px 18px 24px; font-size: 10px; }
 }
