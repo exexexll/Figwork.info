@@ -38,7 +38,7 @@ const pool = process.env.DATABASE_URL
     })
   : null;
 
-// Auto-create the waitlist table on startup
+// Auto-create the waitlist table on startup, plus migrate older rows.
 async function initDB() {
   if (!pool) {
     console.warn('⚠  DATABASE_URL not set — waitlist emails will be logged to console only.');
@@ -49,13 +49,23 @@ async function initDB() {
       CREATE TABLE IF NOT EXISTS waitlist (
         id SERIAL PRIMARY KEY,
         email TEXT UNIQUE NOT NULL,
+        source TEXT NOT NULL DEFAULT 'unknown',
         created_at TIMESTAMPTZ DEFAULT NOW()
       )
     `);
+    // Idempotent column add for tables created before source existed.
+    await pool.query(
+      `ALTER TABLE waitlist ADD COLUMN IF NOT EXISTS source TEXT NOT NULL DEFAULT 'unknown'`
+    );
     console.log('✓ Waitlist table ready');
   } catch (err) {
     console.error('✗ DB init failed:', err.message);
   }
+}
+
+const VALID_SOURCES = new Set(['employer', 'talent']);
+function normaliseSource(value) {
+  return VALID_SOURCES.has(String(value)) ? String(value) : 'unknown';
 }
 
 // ─── Middleware ──────────────────────────────
@@ -75,7 +85,7 @@ app.use((req, res, next) => {
 
 // ─── API: Waitlist ──────────────────────────
 app.post('/api/waitlist', async (req, res) => {
-  const { email } = req.body;
+  const { email, source } = req.body || {};
   const forwarded = req.headers['x-forwarded-for'];
   const ip = String(req.ip || (Array.isArray(forwarded) ? forwarded[0] : forwarded) || 'unknown').split(',')[0].trim();
   const now = Date.now();
@@ -91,14 +101,19 @@ app.post('/api/waitlist', async (req, res) => {
   }
 
   const normalised = email.trim().toLowerCase();
+  const sourceValue = normaliseSource(source);
 
   if (pool) {
     try {
+      // First insert keeps its source. If the same email signs up later from a
+      // different form, we keep the original source rather than overwriting.
       await pool.query(
-        'INSERT INTO waitlist (email) VALUES ($1) ON CONFLICT (email) DO NOTHING',
-        [normalised]
+        `INSERT INTO waitlist (email, source)
+         VALUES ($1, $2)
+         ON CONFLICT (email) DO NOTHING`,
+        [normalised, sourceValue]
       );
-      console.log(`✓ Waitlist: ${normalised}`);
+      console.log(`✓ Waitlist [${sourceValue}]: ${normalised}`);
       return res.json({ ok: true });
     } catch (err) {
       console.error('✗ Waitlist insert error:', err.message);
@@ -107,7 +122,7 @@ app.post('/api/waitlist', async (req, res) => {
   }
 
   // Fallback: no DB configured
-  console.log(`✓ Waitlist (no DB): ${normalised}`);
+  console.log(`✓ Waitlist (no DB) [${sourceValue}]: ${normalised}`);
   return res.json({ ok: true });
 });
 
@@ -129,7 +144,7 @@ app.get('/api/waitlist', async (req, res) => {
 
   try {
     const result = await pool.query(
-      'SELECT email, created_at FROM waitlist ORDER BY created_at DESC'
+      'SELECT email, source, created_at FROM waitlist ORDER BY created_at DESC'
     );
     return res.json({ emails: result.rows });
   } catch (err) {

@@ -16,9 +16,7 @@ COPY thesis.html public/
 COPY style.css public/
 COPY script.js public/
 COPY iconfigwork.png public/
-COPY usc.png public/
-COPY mit.png public/
-COPY ucsd.webp public/
+COPY figwork-logo-dark.png public/
 COPY robots.txt public/
 COPY sitemap.xml public/
 

@@ -3,109 +3,171 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5" />
-  <title>Figwork — Human Intelligence Infrastructure</title>
-  <meta name="description" content="Figwork helps businesses scope, execute, and verify complex work through an AI-guided network of vetted human talent." />
+  <title>Figwork — Hire Early-Career Talent from Leading Universities</title>
+  <meta name="description" content="Figwork is the AI talent marketplace sourcing the top 1% of early-career talent from the world's leading universities." />
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="Figwork — Human Intelligence Infrastructure" />
-  <meta property="og:description" content="AI-guided execution with vetted human talent, structured workflows, and verification built in." />
+  <meta property="og:title" content="Figwork — Hire Early-Career Talent from Leading Universities" />
+  <meta property="og:description" content="The AI talent marketplace for the top 1% from the world's leading universities." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://figwork.info" />
   <meta property="og:image" content="https://figwork.info/og-image.png" />
 
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Figwork — Human Intelligence Infrastructure" />
-  <meta name="twitter:description" content="AI-guided execution with vetted human talent and built-in quality verification." />
+  <meta name="twitter:title" content="Figwork — Hire Early-Career Talent from Leading Universities" />
+  <meta name="twitter:description" content="The AI talent marketplace for the top 1% from the world's leading universities." />
   <meta name="twitter:image" content="https://figwork.info/og-image.png" />
 
-  <!-- Favicon -->
   <link rel="icon" type="image/png" href="iconfigwork.png" />
   <link rel="apple-touch-icon" href="iconfigwork.png" />
+  <meta name="theme-color" content="#EFEBE5" />
 
-  <!-- Theme color for mobile browsers -->
-  <meta name="theme-color" content="#1a1a18" />
-
-  <!-- Preconnect for fonts -->
+  <!--
+    Brand fonts (Manchego is licensed; Roboto Slab is the closest free
+    substitute for the slab logo wordmark). SF Pro renders natively on
+    Apple devices via the system stack; Inter is the fallback elsewhere.
+  -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=32" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800;900&family=Fraunces:opsz,wght,SOFT,WONK@9..144,900,100,1&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="preload" as="image" href="figwork-logo-dark.png" />
+  <link rel="stylesheet" href="style.css?v=220" />
 </head>
-<body>
+<body class="landing-page intro-active" data-role="employer">
+
+  <!-- Intro: brand-only cover screen that pulls up to reveal the hero -->
   <div class="intro-screen" id="introScreen" aria-hidden="true">
-    <div class="intro-swirl" aria-hidden="true"></div>
-    <div class="intro-brand" id="introBrand">
-      <img src="iconfigwork.png" alt="" class="intro-brand-icon" id="introBrandIcon" />
-      <span class="intro-brand-text">Figwork</span>
-    </div>
+    <img src="figwork-logo-dark.png" alt="Figwork" class="intro-brand-logo" />
   </div>
 
-  <!-- Full-screen animated pixel sunset -->
-  <canvas id="sunsetCanvas" aria-hidden="true"></canvas>
+  <!-- Quiet brand-color ambient blobs (only decoration on the canvas) -->
+  <div class="ambient" aria-hidden="true">
+    <span class="ambient-blob ambient-orange"></span>
+    <span class="ambient-blob ambient-mauve"></span>
+  </div>
+  <div class="grain" aria-hidden="true"></div>
 
-  <!-- Dark overlay so text is readable -->
-  <div class="overlay" aria-hidden="true"></div>
+  <!-- Top bar: logo (left), toggle (center), About (right) -->
+  <header class="top-bar" role="banner">
+    <a href="/" class="brand" aria-label="Figwork — home">
+      <img src="figwork-logo-dark.png" alt="Figwork" class="brand-logo" />
+    </a>
 
-  <!-- Top-right nav -->
-  <nav class="top-nav" role="navigation" aria-label="Main navigation">
-    <a href="thesis.html" class="nav-link">Our Thesis</a>
-  </nav>
+    <div class="role-toggle" role="tablist" aria-label="Audience">
+      <span class="role-toggle-indicator" aria-hidden="true"></span>
+      <button
+        type="button"
+        class="role-toggle-btn is-active"
+        data-role="employer"
+        role="tab"
+        aria-selected="true"
+      >
+        For Employers
+      </button>
+      <button
+        type="button"
+        class="role-toggle-btn"
+        data-role="talent"
+        role="tab"
+        aria-selected="false"
+      >
+        For Talents
+      </button>
+    </div>
+
+    <nav class="top-nav" aria-label="Primary">
+      <a href="thesis.html" class="nav-link">About</a>
+    </nav>
+  </header>
 
   <main>
-    <div class="content-card">
-      <p class="text decode">
-        <em>Figwork</em> is a talent sourcing platform that helps owners transform their businesses
-        through a network of 200,000+ vetted contractors. Instead of matching
-        candidates to generic job posts, we use predictive modeling and structured
-        tasks to connect the right experts to specific business needs and deliver
-        efficient, cost-saving outcomes.
-      </p>
+    <section class="hero">
+      <!-- Employer view -->
+      <div class="role-view is-active" data-view="employer">
+        <h1 class="hero-title">
+          Supercharge Your Company
+          <br />
+          with
+          <span class="hero-title-accent">Early Career Talent</span>
+        </h1>
+        <p class="hero-subtitle">
+          Figwork is the AI agent that recruits talents from
+          the world&apos;s leading universities.
+          View over 150k profiles for free.
+        </p>
 
-      <p class="school-line decode">
-        Talent from
-        <img src="usc.png" alt="USC" class="school-icon" />
-        <img src="mit.png" alt="MIT" class="school-icon" />
-        <img src="ucsd.webp" alt="UCSD" class="school-icon" />
-        and 50+ other institutions
-      </p>
+        <form class="launch-soon" id="promptForm" autocomplete="off" novalidate>
+          <span class="launch-pill" aria-hidden="true">Launching Soon</span>
+          <div class="waitlist-row">
+            <input
+              id="promptInput"
+              type="email"
+              class="waitlist-input"
+              placeholder="your@work.email"
+              aria-label="Your work email"
+              required
+            />
+            <button type="submit" class="waitlist-btn">Notify me</button>
+          </div>
+        </form>
 
-      <div class="wip-section">
-        <p class="text secondary decode">Coming in July</p>
-        <div class="wip-items">
-          <div class="wip-item decode">
-            <span class="wip-dot"></span>
-            <span>v1 Figwork</span>
+        <p class="prompt-status" id="promptStatus" aria-live="polite"></p>
+
+        <!-- Quiet school row, spread across the full page width -->
+        <div class="schools-grid">
+          <div class="schools-row">
+            <span>Berkeley</span>
+            <span>Stanford</span>
+            <span>Harvard</span>
           </div>
-          <div class="wip-item decode">
-            <span class="wip-dot"></span>
-            <span>Cascaded Multimodal Person-Job Model</span>
-          </div>
-          <div class="wip-item decode">
-            <span class="wip-dot"></span>
-            <span>Hire Talent from anywhere in minutes</span>
+          <div class="schools-row">
+            <span>MIT</span>
+            <span>UCLA</span>
+            <span>USC</span>
+            <span>UCSD</span>
           </div>
         </div>
       </div>
 
-      <div class="contact-section" id="contact">
-        <a href="mailto:hanson@figwork.ai" class="link decode">Join us &rarr;</a>
-        <p class="contact-email decode">
-          <a href="mailto:hanson@figwork.ai">hanson@figwork.ai</a>
+      <!-- Talent view -->
+      <div class="role-view" data-view="talent" hidden>
+        <h1 class="hero-title">
+          The job hunt,
+          <br />
+          <span class="hero-title-accent">on autopilot</span>.
+        </h1>
+        <p class="hero-subtitle">
+          A browser extension that finds your best-fit roles and sends
+          20 personalized recruiter emails per day, on your behalf.
+          Drop your email &mdash; we&apos;ll let you know the moment it launches.
         </p>
+
+        <form class="launch-soon" id="talentWaitlist" autocomplete="off" novalidate>
+          <span class="launch-pill" aria-hidden="true">Launching Soon</span>
+          <div class="waitlist-row">
+            <input
+              id="talentEmail"
+              type="email"
+              class="waitlist-input"
+              placeholder="you@university.edu"
+              aria-label="Email address"
+              required
+            />
+            <button type="submit" class="waitlist-btn">Notify me</button>
+          </div>
+        </form>
+        <p class="prompt-status" id="talentStatus" aria-live="polite"></p>
       </div>
-    </div>
+    </section>
   </main>
 
-  <footer></footer>
+  <footer class="site-footer">
+    <span>&copy; <span id="yr"></span> Figwork</span>
+    <a href="thesis.html" class="footer-link">About</a>
+  </footer>
 
-  <div class="time-picker" aria-label="Time of day view">
-    <button class="time-square" data-phase="morning" title="Morning" aria-label="Morning view"></button>
-    <button class="time-square" data-phase="noon" title="Noon" aria-label="Noon view"></button>
-    <button class="time-square" data-phase="evening" title="Evening" aria-label="Evening view"></button>
-    <button class="time-square" data-phase="night" title="Night" aria-label="Night view"></button>
-  </div>
-
-  <script src="script.js?v=34"></script>
+  <script src="script.js?v=220"></script>
 </body>
 </html>
