@@ -28,13 +28,20 @@ setInterval(() => {
 }, WAITLIST_WINDOW_MS).unref();
 
 // ─── Database ───────────────────────────────
+function isLocalDatabaseUrl(url = '') {
+  return /localhost|127\.0\.0\.1/i.test(String(url));
+}
+
 const pool = process.env.DATABASE_URL
   ? new Pool({
       connectionString: process.env.DATABASE_URL,
-      ssl: process.env.DATABASE_URL.includes('localhost')
+      // Managed Postgres providers (Railway, Render, etc.) commonly require TLS
+      // but do not provide a cert chain that passes strict client validation.
+      ssl: isLocalDatabaseUrl(process.env.DATABASE_URL)
         ? false
-        : { rejectUnauthorized: true },
+        : { rejectUnauthorized: false },
       max: 5,
+      connectionTimeoutMillis: 10000,
     })
   : null;
 
